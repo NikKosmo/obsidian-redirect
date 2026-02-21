@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Opening in Obsidian...</title>
+<style>
+  body { font-family: -apple-system, system-ui, sans-serif; text-align: center; padding: 40px 20px; background: #1e1e2e; color: #cdd6f4; }
+  a { color: #89b4fa; }
+  .fallback { margin-top: 24px; display: none; }
+</style>
+</head>
+<body>
+<h2>Opening in Obsidian...</h2>
+<p id="status">Redirecting...</p>
+<div id="fallback" class="fallback">
+  <p>If Obsidian didn't open, <a id="manual-link" href="#">tap here</a>.</p>
+  <p style="font-size: 0.85em; color: #a6adc8;">Make sure Obsidian is installed.</p>
+</div>
+<script>
+(function() {
+  var params = new URLSearchParams(window.location.search);
+  var vault = params.get('vault');
+  var file = params.get('file');
+
+  if (!vault || !file) {
+    document.getElementById('status').textContent = 'Missing vault or file parameter.';
+    return;
+  }
+
+  var obsidianUrl = 'obsidian://open?vault=' + encodeURIComponent(vault) + '&file=' + encodeURIComponent(file);
+
+  document.getElementById('manual-link').href = obsidianUrl;
+
+  // Try to open immediately
+  window.location.href = obsidianUrl;
+
+  // Show fallback after a short delay
+  setTimeout(function() {
+    document.getElementById('fallback').style.display = 'block';
+    document.getElementById('status').textContent = 'Obsidian should be opening...';
+  }, 1500);
+})();
+</script>
+</body>
+</html>
